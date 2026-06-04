@@ -12,6 +12,7 @@ dist
 dist-ssr
 extension/workspace
 *.local
+*.zip
 
 # Editor directories and files
 .vscode/*

@@ -3,7 +3,7 @@ const STORAGE_KEY = "clipboard-workspace-cards";
 /**
  * Detects whether we're running inside a Chrome extension context.
  */
-function isChromeExtension() {
+function isExtensionContext() {
   return (
     typeof chrome !== "undefined" &&
     typeof chrome.storage !== "undefined" &&
@@ -16,7 +16,7 @@ function isChromeExtension() {
  * Returns a promise that resolves to the cards array.
  */
 export async function loadItems() {
-  if (isChromeExtension()) {
+  if (isExtensionContext()) {
     return new Promise((resolve) => {
       chrome.storage.local.get([STORAGE_KEY], (result) => {
         resolve(result[STORAGE_KEY] || null);
@@ -33,7 +33,7 @@ export async function loadItems() {
  * Returns a promise that resolves when save completes.
  */
 export async function saveItems(cards) {
-  if (isChromeExtension()) {
+  if (isExtensionContext()) {
     return new Promise((resolve) => {
       chrome.storage.local.set({ [STORAGE_KEY]: cards }, resolve);
     });

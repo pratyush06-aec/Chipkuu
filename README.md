@@ -146,17 +146,27 @@ npm run preview
 
 ---
 
-## Chrome Extension Setup
+## Universal Extension Setup
 
-The extension lives in `clipboard-workspace/extension/` and uses **Manifest V3**.
+The extension is compatible with **Chrome, Edge, Brave, Opera, and Firefox**.
 
-### Loading the Extension
+### Option A: Loading from Source (Developers)
 
-1. Open **`chrome://extensions`** in Google Chrome
-2. Toggle **Developer mode** (top-right corner)
-3. Click **Load unpacked**
-4. Navigate to and select `Chipkuu/clipboard-workspace/extension/`
-5. The 📋 Clipboard Workspace icon appears in your toolbar
+**For Chromium browsers (Chrome, Edge, Brave):**
+1. Open **`chrome://extensions`** (or `edge://extensions`)
+2. Toggle **Developer mode**
+3. Click **Load unpacked** and select the `Chipkuu/clipboard-workspace/extension/` folder.
+
+**For Firefox:**
+1. Open **`about:debugging#/runtime/this-firefox`**
+2. Click **Load Temporary Add-on**
+3. Select any file inside the `Chipkuu/clipboard-workspace/extension/` folder (like `manifest.json`).
+
+### Option B: Installing from a .zip (End Users)
+
+If someone has shared a `.zip` file with you (e.g., `clipboard-workspace-v1.2.0.zip`):
+1. Extract the `.zip` file to a folder on your computer.
+2. Follow the steps in **Option A** to load that extracted folder into your browser.
 
 ### Using the Extension
 
@@ -393,6 +403,8 @@ To switch to a light theme, override these tokens. The entire UI references them
 |---------|-------------|
 | `npm run dev` | Start Vite dev server with HMR at `localhost:5173` |
 | `npm run build` | Create production build in `dist/` |
+| `npm run build:extension` | Build and copy the workspace directly into the extension folder |
+| `npm run package` | Generate a universal `.zip` file of the extension for distribution |
 | `npm run preview` | Preview the production build locally |
 | `npm run lint` | Run ESLint on the codebase |
 
