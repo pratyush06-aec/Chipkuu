@@ -27,21 +27,105 @@ function saveCard(card) {
     chrome.storage.local.set({ [STORAGE_KEY]: cards }, () => {
       showStatus("✓ Saved to Inbox!", "success");
       updateItemCount();
+      renderRecentCaptures();
     });
   });
 }
 
-// Initialize popup
+// ──────────────────────────────────
+// Recent Captures
+// ──────────────────────────────────
+
+const TYPE_ICONS = {
+  link: "🔗",
+  text: "📝",
+  image: "🖼️",
+  audio: "🎵",
+};
+
+function formatTimeAgo(timestamp) {
+  const diff = Date.now() - timestamp;
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return "just now";
+  if (mins < 60) return `${mins}m ago`;
+  const hours = Math.floor(mins / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  return `${days}d ago`;
+}
+
+function renderRecentCaptures() {
+  chrome.storage.local.get([STORAGE_KEY], (result) => {
+    const cards = result[STORAGE_KEY] || [];
+    const container = document.getElementById("recent-captures");
+
+    if (cards.length === 0) {
+      container.innerHTML = '<div class="recent-empty">No captures yet</div>';
+      return;
+    }
+
+    // Show last 5
+    const recent = cards.slice(0, 5);
+    container.innerHTML = recent
+      .map(
+        (card) => `
+      <div class="recent-item">
+        <span class="recent-icon">${TYPE_ICONS[card.type] || "📄"}</span>
+        <div class="recent-content">
+          <span class="recent-title">${escapeHtml(card.title || card.content.slice(0, 40))}</span>
+          <span class="recent-time">${formatTimeAgo(card.createdAt)}</span>
+        </div>
+      </div>
+    `
+      )
+      .join("");
+  });
+}
+
+function escapeHtml(text) {
+  const div = document.createElement("div");
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// ──────────────────────────────────
+// Toggle
+// ──────────────────────────────────
+
+function initToggle() {
+  const checkbox = document.getElementById("toggle-capture");
+  const statusText = document.getElementById("status-text");
+
+  // Get current state from background
+  chrome.runtime.sendMessage({ action: "get-toggle" }, (response) => {
+    if (chrome.runtime.lastError) return;
+    const enabled = response?.enabled !== false;
+    checkbox.checked = enabled;
+    updateToggleUI(enabled);
+  });
+
+  // Handle toggle change
+  checkbox.addEventListener("change", () => {
+    const enabled = checkbox.checked;
+    chrome.runtime.sendMessage({ action: "set-toggle", enabled }, () => {
+      updateToggleUI(enabled);
+    });
+  });
+
+  function updateToggleUI(enabled) {
+    statusText.textContent = enabled ? "active" : "paused";
+    statusText.className = enabled ? "status-on" : "status-off";
+  }
+}
+
+// ──────────────────────────────────
+// Init
+// ──────────────────────────────────
+
 document.addEventListener("DOMContentLoaded", () => {
   updateItemCount();
-
-  // Show current URL
-  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    const tab = tabs[0];
-    if (tab) {
-      document.getElementById("page-url").textContent = tab.url;
-    }
-  });
+  renderRecentCaptures();
+  initToggle();
 
   // Save Link button
   document.getElementById("save-link").addEventListener("click", () => {
@@ -62,42 +146,6 @@ document.addEventListener("DOMContentLoaded", () => {
       };
 
       saveCard(card);
-    });
-  });
-
-  // Save Text button
-  document.getElementById("save-text").addEventListener("click", () => {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      const tab = tabs[0];
-      if (!tab) {
-        showStatus("No active tab found", "error");
-        return;
-      }
-
-      chrome.scripting.executeScript(
-        {
-          target: { tabId: tab.id },
-          func: () => window.getSelection().toString(),
-        },
-        (results) => {
-          const selectedText = results?.[0]?.result;
-          if (!selectedText || selectedText.trim() === "") {
-            showStatus("No text selected on the page", "error");
-            return;
-          }
-
-          const card = {
-            id: generateId(),
-            type: "text",
-            content: selectedText.trim(),
-            title: selectedText.trim().slice(0, 50) + (selectedText.length > 50 ? "..." : ""),
-            section: "inbox",
-            createdAt: Date.now(),
-          };
-
-          saveCard(card);
-        }
-      );
     });
   });
 });

@@ -11,26 +11,47 @@
 </head>
 <body>
   <div class="popup">
+    <!-- Header -->
     <div class="popup-header">
       <div class="logo">📋</div>
       <div class="header-text">
         <h1>Clipboard Workspace</h1>
-        <p id="page-url" class="url-preview">Loading...</p>
+        <p class="subtitle">Auto-capture is <span id="status-text" class="status-on">active</span></p>
       </div>
     </div>
 
+    <!-- Toggle -->
+    <div class="toggle-row">
+      <div class="toggle-info">
+        <span class="toggle-label">Auto-Capture</span>
+        <span class="toggle-desc">Capture copies automatically</span>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="toggle-capture" checked />
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+
+    <!-- Status Message -->
     <div id="status" class="status hidden"></div>
 
+    <!-- Save Page Button -->
     <button id="save-link" class="save-btn">
       <span class="btn-icon">🔗</span>
       Save Current Page
     </button>
 
-    <button id="save-text" class="save-btn save-btn-secondary">
-      <span class="btn-icon">📝</span>
-      Save Selected Text
-    </button>
+    <!-- Divider -->
+    <div class="divider">
+      <span>Recent Captures</span>
+    </div>
 
+    <!-- Recent Captures -->
+    <div id="recent-captures" class="recent-list">
+      <div class="recent-empty">No captures yet</div>
+    </div>
+
+    <!-- Footer -->
     <div class="footer">
       <span id="item-count" class="item-count">—</span> items saved
     </div>
