@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="popup.css" />
+  <title>Clipboard Workspace</title>
+</head>
+<body>
+  <div class="popup">
+    <div class="popup-header">
+      <div class="logo">📋</div>
+      <div class="header-text">
+        <h1>Clipboard Workspace</h1>
+        <p id="page-url" class="url-preview">Loading...</p>
+      </div>
+    </div>
+
+    <div id="status" class="status hidden"></div>
+
+    <button id="save-link" class="save-btn">
+      <span class="btn-icon">🔗</span>
+      Save Current Page
+    </button>
+
+    <button id="save-text" class="save-btn save-btn-secondary">
+      <span class="btn-icon">📝</span>
+      Save Selected Text
+    </button>
+
+    <div class="footer">
+      <span id="item-count" class="item-count">—</span> items saved
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
