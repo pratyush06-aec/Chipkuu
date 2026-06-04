@@ -148,7 +148,7 @@ npm run preview
 
 ## Universal Extension Setup
 
-The extension is compatible with **Chrome, Edge, Brave, Opera, and Firefox**.
+The extension is compatible with **Chrome, Edge, Brave, Opera, Firefox, and Safari (macOS)**.
 
 ### Option A: Loading from Source (Developers)
 
@@ -167,6 +167,20 @@ The extension is compatible with **Chrome, Edge, Brave, Opera, and Firefox**.
 If someone has shared a `.zip` file with you (e.g., `clipboard-workspace-v1.2.0.zip`):
 1. Extract the `.zip` file to a folder on your computer.
 2. Follow the steps in **Option A** to load that extracted folder into your browser.
+
+### Option C: Safari on macOS
+
+Safari requires the web extension to be wrapped in a native macOS app. Apple provides a command-line tool to do this automatically.
+
+1. Ensure you have **Xcode** installed from the Mac App Store.
+2. Open Terminal and run the converter on the `extension` directory:
+   ```bash
+   xcrun safari-web-extension-converter path/to/Chipkuu/clipboard-workspace/extension
+   ```
+3. This will generate an Xcode project and automatically open it.
+4. Click the **Run** button (`Cmd + R`) in Xcode to build the app.
+5. Once the app launches, it will ask you to open **Safari Settings**.
+6. Go to the **Extensions** tab in Safari and check the box next to **Clipboard Workspace**.
 
 ### Using the Extension
 
