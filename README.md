@@ -39,16 +39,16 @@ A **local-first** browser-based productivity tool for managing copied items — 
 
 | Feature | Description |
 |---------|-------------|
-| **5-Column Board** | Inbox, Links, Images, Text, Audio — each color-coded with card counts |
+| **Dual-Layer Architecture** | Features a cinematic Landing Screen with liquid glass aesthetics that transitions smoothly into the main workspace. |
+| **Stacked-to-Spread UI** | Cards pile up like a physical deck when inactive to save space, and fan out vertically when clicked using GSAP animations. |
+| **Floating Sections** | The "Inbox" remains permanently visible while Links, Images, Text, and Audio are floating sections accessible via a sleek sidebar. |
+| **Liquid Glass Aesthetics** | Premium visual design with vibrant gradients, custom glassmorphism panels, pill badges, and drop shadows. |
 | **4 Card Types** | Link (🔗), Text (📝), Image (🖼️), Audio (🎵) — each with distinct rendering |
-| **Drag & Drop** | Move cards between any columns using @dnd-kit |
-| **Local Persistence** | Cards auto-save to `localStorage` — survives page refresh |
-| **Search** | Real-time search bar filtering across all columns by content and title |
-| **Type Filters** | Filter the entire board by card type (All, Links, Text, Images, Audio) |
-| **Delete** | Permanently remove cards with a hover-reveal 🗑 button |
-| **Copy to Clipboard** | Copy card content back to system clipboard with a 📋 button |
-| **Toast Notifications** | Visual feedback for delete and copy actions |
-| **Chrome Extension** | Manifest V3 popup to save the current page URL or selected text |
+| **Drag & Drop** | Move cards between columns seamlessly using @dnd-kit (automatically pauses while cards are stacked). |
+| **Local Persistence** | Cards auto-save to `localStorage` — survives page refresh. |
+| **Search & Filters** | Real-time search bar filtering and Type filters (All, Links, Text, Images, Audio). |
+| **Delete & Copy** | Permanently remove cards (🗑) or copy back to system clipboard (📋) via hover actions. |
+| **Chrome Extension** | Manifest V3 popup to save the current page URL or selected text directly to your workspace. |
 
 ---
 

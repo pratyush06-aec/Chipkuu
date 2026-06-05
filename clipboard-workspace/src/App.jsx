@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import Board from "./components/Board";
+import LandingScreen from "./components/LandingScreen";
+import AnimatedBackground from "./components/AnimatedBackground";
 import { loadItems, saveItems } from "./utils/storage";
 import { dummyData } from "./data/dummyData";
 import "./index.css";
@@ -7,6 +9,7 @@ import "./index.css";
 export default function App() {
   const [cards, setCards] = useState([]);
   const [loaded, setLoaded] = useState(false);
+  const [isVisualizing, setIsVisualizing] = useState(false);
   const [toast, setToast] = useState(null);
   const toastTimeout = useRef(null);
 
@@ -67,13 +70,21 @@ export default function App() {
   }
 
   return (
-    <div className="h-full bg-[var(--color-bg-primary)] relative">
-      <Board
-        cards={cards}
-        setCards={setCards}
-        onDeleteCard={handleDelete}
-        onCopyCard={handleCopy}
-      />
+    <div className="h-full relative overflow-hidden text-[var(--color-text-primary)]">
+      <AnimatedBackground />
+      
+      {!isVisualizing ? (
+        <LandingScreen onVisualize={() => setIsVisualizing(true)} />
+      ) : (
+        <div className="h-full w-full animate-[fadeIn_0.8s_ease-out]">
+          <Board
+            cards={cards}
+            setCards={setCards}
+            onDeleteCard={handleDelete}
+            onCopyCard={handleCopy}
+          />
+        </div>
+      )}
 
       {/* Toast */}
       {toast && (
