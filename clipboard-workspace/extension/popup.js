@@ -148,4 +148,9 @@ document.addEventListener("DOMContentLoaded", () => {
       saveCard(card);
     });
   });
+
+  // Launch Workspace button
+  document.getElementById("launch-workspace").addEventListener("click", () => {
+    chrome.tabs.create({ url: chrome.runtime.getURL("workspace/index.html") });
+  });
 });

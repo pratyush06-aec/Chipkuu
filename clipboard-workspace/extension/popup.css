@@ -153,6 +153,12 @@ body {
 
 /* ── Save Button ── */
 
+.actions-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .save-btn {
   width: 100%;
   padding: 10px 14px;
@@ -179,6 +185,18 @@ body {
 
 .save-btn:active {
   transform: translateY(0);
+}
+
+.save-btn.secondary {
+  background: var(--bg-secondary);
+  border-color: var(--border-subtle);
+  color: var(--text-secondary);
+}
+
+.save-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--border-medium);
+  color: var(--text-primary);
 }
 
 .btn-icon {
