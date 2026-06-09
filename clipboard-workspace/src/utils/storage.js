@@ -20,13 +20,13 @@ export async function loadItems() {
   if (isExtensionContext()) {
     return new Promise((resolve) => {
       chrome.storage.local.get([STORAGE_KEY], (result) => {
-        resolve(result[STORAGE_KEY] || null);
+        resolve(result[STORAGE_KEY] !== undefined ? result[STORAGE_KEY] : null);
       });
     });
   }
 
   const raw = localStorage.getItem(STORAGE_KEY);
-  return raw ? JSON.parse(raw) : null;
+  return raw !== null ? JSON.parse(raw) : null;
 }
 
 /**
@@ -59,9 +59,6 @@ export async function loadWorkspaces() {
   return raw ? JSON.parse(raw) : null;
 }
 
-/**
- * Save workspaces to storage.
- */
 export async function saveWorkspaces(workspaces) {
   if (isExtensionContext()) {
     return new Promise((resolve) => {
@@ -70,6 +67,26 @@ export async function saveWorkspaces(workspaces) {
   }
 
   localStorage.setItem(WORKSPACE_STORAGE_KEY, JSON.stringify(workspaces));
+}
+
+export async function loadActiveWorkspace() {
+  if (isExtensionContext()) {
+    return new Promise((resolve) => {
+      chrome.storage.local.get(["clipboard-active-workspace"], (result) => {
+        resolve(result["clipboard-active-workspace"] || "default");
+      });
+    });
+  }
+  return localStorage.getItem("clipboard-active-workspace") || "default";
+}
+
+export async function saveActiveWorkspace(id) {
+  if (isExtensionContext()) {
+    return new Promise((resolve) => {
+      chrome.storage.local.set({ "clipboard-active-workspace": id }, resolve);
+    });
+  }
+  localStorage.setItem("clipboard-active-workspace", id);
 }
 
 /**

@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import Board from "./components/Board";
 import LandingScreen from "./components/LandingScreen";
 import AnimatedBackground from "./components/AnimatedBackground";
-import { loadItems, saveItems, loadWorkspaces, saveWorkspaces, generateWorkspaceId } from "./utils/storage";
+import { loadItems, saveItems, loadWorkspaces, saveWorkspaces, loadActiveWorkspace, saveActiveWorkspace, generateWorkspaceId } from "./utils/storage";
 import { dummyData } from "./data/dummyData";
 import "./index.css";
 
@@ -29,9 +29,13 @@ export default function App() {
         await saveWorkspaces(defaultWorkspaces);
       }
 
+      // Load active workspace
+      const storedWorkspaceId = await loadActiveWorkspace();
+      setActiveWorkspaceId(storedWorkspaceId);
+
       // Load cards
       const stored = await loadItems();
-      if (stored && stored.length > 0) {
+      if (Array.isArray(stored)) {
         // Ensure all stored cards have a workspaceId
         const migratedCards = stored.map(c => ({
           ...c,
@@ -60,6 +64,13 @@ export default function App() {
       saveWorkspaces(workspaces);
     }
   }, [workspaces, loaded]);
+
+  // Persist active workspace whenever it changes
+  useEffect(() => {
+    if (loaded) {
+      saveActiveWorkspace(activeWorkspaceId);
+    }
+  }, [activeWorkspaceId, loaded]);
 
   const showToast = useCallback((message, type = "info") => {
     if (toastTimeout.current) clearTimeout(toastTimeout.current);

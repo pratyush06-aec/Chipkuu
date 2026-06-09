@@ -89,23 +89,31 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   let card = null;
 
   if (info.menuItemId === "save-image-to-workspace" && info.srcUrl) {
+    const data = await chrome.storage.local.get(["clipboard-active-workspace"]);
+    const activeWorkspaceId = data["clipboard-active-workspace"] || "default";
+
     card = {
       id: generateId(),
       type: "image",
       content: info.srcUrl,
       title: info.srcUrl.split("/").pop().split("?")[0] || "Image",
       section: "inbox",
+      workspaceId: activeWorkspaceId,
       createdAt: Date.now(),
     };
   }
 
   if (info.menuItemId === "save-link-to-workspace" && info.linkUrl) {
+    const data = await chrome.storage.local.get(["clipboard-active-workspace"]);
+    const activeWorkspaceId = data["clipboard-active-workspace"] || "default";
+
     card = {
       id: generateId(),
       type: "link",
       content: info.linkUrl,
       title: info.selectionText || info.linkUrl,
       section: "inbox",
+      workspaceId: activeWorkspaceId,
       createdAt: Date.now(),
     };
   }
@@ -129,12 +137,16 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         return;
       }
 
+      const data = await chrome.storage.local.get(["clipboard-active-workspace"]);
+      const activeWorkspaceId = data["clipboard-active-workspace"] || "default";
+
       const card = {
         id: generateId(),
         type: message.type || "text",
         content: message.content,
         title: message.title || message.content.slice(0, 60),
         section: "inbox",
+        workspaceId: activeWorkspaceId,
         createdAt: Date.now(),
       };
 
