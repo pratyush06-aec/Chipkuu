@@ -72,6 +72,28 @@ export default function App() {
     }
   }, [activeWorkspaceId, loaded]);
 
+  // Live Sync: Listen for items added by the background script so they appear instantly
+  useEffect(() => {
+    if (loaded && typeof chrome !== "undefined" && chrome.storage && chrome.storage.onChanged) {
+      const handleStorageChange = (changes, area) => {
+        if (area === "local" && changes["clipboard-workspace-cards"]) {
+          const newCards = changes["clipboard-workspace-cards"].newValue || [];
+          
+          setCards(prev => {
+            // Only update if there's an actual difference to avoid infinite loops with saveItems
+            if (JSON.stringify(prev) !== JSON.stringify(newCards)) {
+              return newCards;
+            }
+            return prev;
+          });
+        }
+      };
+      
+      chrome.storage.onChanged.addListener(handleStorageChange);
+      return () => chrome.storage.onChanged.removeListener(handleStorageChange);
+    }
+  }, [loaded]);
+
   const showToast = useCallback((message, type = "info") => {
     if (toastTimeout.current) clearTimeout(toastTimeout.current);
     setToast({ message, type });
