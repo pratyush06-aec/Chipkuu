@@ -9,6 +9,7 @@ import {
 } from "@dnd-kit/core";
 import Column from "./Column";
 import Card from "./Card";
+import WorkspaceSelector from "./WorkspaceSelector";
 
 const SIDEBAR_SECTIONS = [
   { key: "links", label: "Links", icon: "🔗", color: "var(--color-col-links)" },
@@ -17,7 +18,16 @@ const SIDEBAR_SECTIONS = [
   { key: "audio", label: "Audio", icon: "🎵", color: "var(--color-col-audio)" },
 ];
 
-export default function Board({ cards, setCards, onDeleteCard, onCopyCard }) {
+export default function Board({ 
+  cards, 
+  setCards, 
+  workspaces,
+  activeWorkspaceId,
+  setActiveWorkspaceId,
+  setWorkspaces,
+  onDeleteCard, 
+  onCopyCard 
+}) {
   const [activeId, setActiveId] = useState(null);
   const [openSection, setOpenSection] = useState(null);
 
@@ -82,13 +92,15 @@ export default function Board({ cards, setCards, onDeleteCard, onCopyCard }) {
   return (
     <div className="flex flex-col h-full w-full">
       {/* Top Bar */}
-      <header className="flex-shrink-0 px-8 py-6 border-b border-[var(--color-border-subtle)] liquid-glass z-10 relative">
+      <header className="flex-shrink-0 px-6 py-4 border-b border-[var(--color-border-subtle)] liquid-glass z-50 relative">
         <div className="flex items-center justify-between gap-6 flex-wrap">
-          {/* Logo only */}
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[var(--color-accent-purple)] to-[var(--color-accent-blue)] flex items-center justify-center text-2xl font-bold shadow-lg shadow-purple-500/20">
-              📋
-            </div>
+          <div className="flex items-center gap-6">
+            <WorkspaceSelector 
+              workspaces={workspaces}
+              activeWorkspaceId={activeWorkspaceId}
+              setActiveWorkspaceId={setActiveWorkspaceId}
+              setWorkspaces={setWorkspaces}
+            />
           </div>
         </div>
       </header>
@@ -96,13 +108,13 @@ export default function Board({ cards, setCards, onDeleteCard, onCopyCard }) {
       {/* Main Area */}
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar for Navigation */}
-        <div className="w-48 md:w-56 flex-shrink-0 border-r border-[var(--color-border-subtle)] liquid-glass-panel flex flex-col items-center py-10 gap-8 z-10 relative">
+        <div className="w-48 md:w-56 flex-shrink-0 border-r border-[var(--color-border-subtle)] liquid-glass-panel flex flex-col items-center py-6 gap-4 z-10 relative overflow-y-auto custom-scrollbar">
           {SIDEBAR_SECTIONS.map((sec) => (
             <button
               key={sec.key}
               onClick={() => setOpenSection(openSection === sec.key ? null : sec.key)}
               className={`
-                group relative flex flex-col items-center justify-center gap-6 px-8 py-6 rounded-3xl w-[85%]
+                group relative flex flex-col items-center justify-center gap-3 px-4 py-4 rounded-3xl w-[85%]
                 transition-all duration-300
                 ${openSection === sec.key 
                   ? "bg-[rgba(255,255,255,0.1)] shadow-[0_0_20px_rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.2)]" 
@@ -110,8 +122,8 @@ export default function Board({ cards, setCards, onDeleteCard, onCopyCard }) {
               `}
               title={sec.label}
             >
-              <span className="text-5xl group-hover:scale-125 transition-transform duration-300 drop-shadow-xl">{sec.icon}</span>
-              <span className="text-lg font-bold tracking-widest uppercase">{sec.label}</span>
+              <span className="text-3xl group-hover:scale-110 transition-transform duration-300 drop-shadow-xl">{sec.icon}</span>
+              <span className="text-sm font-bold tracking-widest uppercase">{sec.label}</span>
               
               {/* Count badge */}
               {cardsBySection[sec.key].length > 0 && (

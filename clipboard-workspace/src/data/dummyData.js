@@ -7,6 +7,7 @@ export const dummyData = [
     content: "https://github.com",
     title: "GitHub",
     section: "inbox",
+    workspaceId: "default",
     createdAt: now - 86400000,
   },
   {
@@ -15,6 +16,7 @@ export const dummyData = [
     content: "Meeting notes: Discuss Q3 product roadmap with the design team. Key topics include the new dashboard redesign, mobile responsiveness improvements, and the upcoming feature launch timeline.",
     title: "Q3 Roadmap Notes",
     section: "inbox",
+    workspaceId: "default",
     createdAt: now - 72000000,
   },
   {
@@ -23,6 +25,7 @@ export const dummyData = [
     content: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400",
     title: "Abstract Gradient",
     section: "inbox",
+    workspaceId: "default",
     createdAt: now - 60000000,
   },
   {
@@ -31,6 +34,7 @@ export const dummyData = [
     content: "https://react.dev",
     title: "React Documentation",
     section: "links",
+    workspaceId: "default",
     createdAt: now - 50000000,
   },
   {
@@ -39,6 +43,7 @@ export const dummyData = [
     content: "voice-memo-standup.mp3",
     title: "Daily Standup Recording",
     section: "inbox",
+    workspaceId: "default",
     createdAt: now - 40000000,
   },
   {
@@ -47,6 +52,7 @@ export const dummyData = [
     content: "API endpoint pattern: /api/v2/{resource}/{id}/actions — use consistent naming and always return pagination metadata in list responses.",
     title: "API Design Notes",
     section: "text",
+    workspaceId: "default",
     createdAt: now - 30000000,
   },
   {
@@ -55,6 +61,7 @@ export const dummyData = [
     content: "https://tailwindcss.com",
     title: "Tailwind CSS",
     section: "links",
+    workspaceId: "default",
     createdAt: now - 20000000,
   },
   {
@@ -63,6 +70,7 @@ export const dummyData = [
     content: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400",
     title: "Dashboard Screenshot",
     section: "images",
+    workspaceId: "default",
     createdAt: now - 10000000,
   },
   {
@@ -71,6 +79,7 @@ export const dummyData = [
     content: "podcast-clip-design-systems.mp3",
     title: "Design Systems Podcast Clip",
     section: "audio",
+    workspaceId: "default",
     createdAt: now - 5000000,
   },
   {
@@ -79,6 +88,7 @@ export const dummyData = [
     content: "Remember to follow up on the sponsorship proposal with Genpact. Deadline is next Friday.",
     title: "Sponsorship Follow-up",
     section: "inbox",
+    workspaceId: "default",
     createdAt: now,
   },
 ];

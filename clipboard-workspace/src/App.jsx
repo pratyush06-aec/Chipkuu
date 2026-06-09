@@ -2,23 +2,42 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import Board from "./components/Board";
 import LandingScreen from "./components/LandingScreen";
 import AnimatedBackground from "./components/AnimatedBackground";
-import { loadItems, saveItems } from "./utils/storage";
+import { loadItems, saveItems, loadWorkspaces, saveWorkspaces, generateWorkspaceId } from "./utils/storage";
 import { dummyData } from "./data/dummyData";
 import "./index.css";
 
 export default function App() {
   const [cards, setCards] = useState([]);
+  const [workspaces, setWorkspaces] = useState([]);
+  const [activeWorkspaceId, setActiveWorkspaceId] = useState("default");
+  
   const [loaded, setLoaded] = useState(false);
   const [isVisualizing, setIsVisualizing] = useState(false);
   const [toast, setToast] = useState(null);
   const toastTimeout = useRef(null);
 
-  // Load cards on mount
+  // Load cards and workspaces on mount
   useEffect(() => {
     async function init() {
+      // Load workspaces
+      const storedWorkspaces = await loadWorkspaces();
+      if (storedWorkspaces && storedWorkspaces.length > 0) {
+        setWorkspaces(storedWorkspaces);
+      } else {
+        const defaultWorkspaces = [{ id: "default", name: "Default Workspace" }];
+        setWorkspaces(defaultWorkspaces);
+        await saveWorkspaces(defaultWorkspaces);
+      }
+
+      // Load cards
       const stored = await loadItems();
       if (stored && stored.length > 0) {
-        setCards(stored);
+        // Ensure all stored cards have a workspaceId
+        const migratedCards = stored.map(c => ({
+          ...c,
+          workspaceId: c.workspaceId || "default"
+        }));
+        setCards(migratedCards);
       } else {
         setCards(dummyData);
         await saveItems(dummyData);
@@ -34,6 +53,13 @@ export default function App() {
       saveItems(cards);
     }
   }, [cards, loaded]);
+
+  // Persist workspaces whenever they change
+  useEffect(() => {
+    if (loaded) {
+      saveWorkspaces(workspaces);
+    }
+  }, [workspaces, loaded]);
 
   const showToast = useCallback((message, type = "info") => {
     if (toastTimeout.current) clearTimeout(toastTimeout.current);
@@ -55,6 +81,8 @@ export default function App() {
     },
     [showToast]
   );
+
+  const activeWorkspaceCards = cards.filter(c => c.workspaceId === activeWorkspaceId);
 
   if (!loaded) {
     return (
@@ -78,8 +106,12 @@ export default function App() {
       ) : (
         <div className="h-full w-full animate-[fadeIn_0.8s_ease-out]">
           <Board
-            cards={cards}
+            cards={activeWorkspaceCards}
             setCards={setCards}
+            workspaces={workspaces}
+            activeWorkspaceId={activeWorkspaceId}
+            setActiveWorkspaceId={setActiveWorkspaceId}
+            setWorkspaces={setWorkspaces}
             onDeleteCard={handleDelete}
             onCopyCard={handleCopy}
           />
