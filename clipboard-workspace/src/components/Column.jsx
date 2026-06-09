@@ -77,6 +77,7 @@ export default function Column({ id, cards, onDeleteCard, onCopyCard }) {
       ref={containerRef}
       className={`
         flex flex-col min-w-[420px] max-w-[500px] flex-1
+        my-[2px] py-[2px]
         rounded-[2rem] overflow-hidden
         liquid-glass-panel
         border border-[var(--color-border-subtle)]

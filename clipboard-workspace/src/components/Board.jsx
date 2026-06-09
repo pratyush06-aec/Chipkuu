@@ -92,7 +92,7 @@ export default function Board({
   return (
     <div className="flex flex-col h-full w-full">
       {/* Top Bar */}
-      <header className="flex-shrink-0 px-6 py-4 border-b border-[var(--color-border-subtle)] liquid-glass z-50 relative">
+      <header className="flex-shrink-0 px-10 md:px-16 py-6 border-b border-[var(--color-border-subtle)] liquid-glass z-50 relative">
         <div className="flex items-center justify-between gap-6 flex-wrap">
           <div className="flex items-center gap-6">
             <WorkspaceSelector 
@@ -108,7 +108,7 @@ export default function Board({
       {/* Main Area */}
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar for Navigation */}
-        <div className="w-48 md:w-56 flex-shrink-0 border-r border-[var(--color-border-subtle)] liquid-glass-panel flex flex-col items-center py-6 gap-4 z-10 relative overflow-y-auto custom-scrollbar">
+        <div className="w-48 md:w-56 flex-shrink-0 border-r border-[var(--color-border-subtle)] liquid-glass-panel flex flex-col items-center py-12 gap-6 z-10 relative overflow-y-auto custom-scrollbar">
           {SIDEBAR_SECTIONS.map((sec) => (
             <button
               key={sec.key}

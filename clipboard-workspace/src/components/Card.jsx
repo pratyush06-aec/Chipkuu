@@ -46,6 +46,14 @@ function formatTime(timestamp) {
   return `${days}d ago`;
 }
 
+function formatExactDate(timestamp) {
+  return new Date(timestamp).toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric"
+  });
+}
+
 function CardContent({ card }) {
   const { type, content, title } = card;
 
@@ -247,12 +255,13 @@ export default function Card({ card, onDelete, onCopy, isSpread = true, index = 
 
   const handleCopy = async (e) => {
     e.stopPropagation();
+    const copyText = `${card.content}\n\n[Captured: ${formatExactDate(card.createdAt)}]`;
     try {
-      await navigator.clipboard.writeText(card.content);
+      await navigator.clipboard.writeText(copyText);
       if (onCopy) onCopy(card.id);
     } catch {
       const ta = document.createElement("textarea");
-      ta.value = card.content;
+      ta.value = copyText;
       document.body.appendChild(ta);
       ta.select();
       document.execCommand("copy");
@@ -306,6 +315,14 @@ export default function Card({ card, onDelete, onCopy, isSpread = true, index = 
 
         {/* Content */}
         <CardContent card={card} />
+
+        {/* Timestamp Footer */}
+        <div className="mt-8 space-y-1 pointer-events-none">
+          <p className="text-sm font-medium text-[var(--color-text-muted)] tracking-wide">Captured:</p>
+          <p className="text-sm font-mono text-[var(--color-text-secondary)]">
+            {formatExactDate(card.createdAt)}
+          </p>
+        </div>
 
         {/* Actions — visible on hover */}
         {isSpread && (
